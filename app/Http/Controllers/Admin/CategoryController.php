@@ -153,7 +153,7 @@ class CategoryController extends Controller
             return response([
                 'status'=> '1',
                 'categories'=> json_decode(json_encode($categories), true),
-                'image_base_url' => asset('images/')
+                'image_base_url' => asset('uploads/')
             ]);
         } else {
             return response([

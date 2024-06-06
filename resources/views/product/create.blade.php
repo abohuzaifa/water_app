@@ -50,7 +50,7 @@
 
         <div  class="col-xs-12 col-sm-12 col-md-12">
             <label for="image">{{trans('lang.image')}}:</label>
-            <input type="file" class="form-control" name="image[]" multiple>
+            <input type="file" class="form-control" name="images[]" multiple>
         </div>
 
         <div  class="col-xs-12 col-sm-12 col-md-12"> 

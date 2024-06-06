@@ -20,11 +20,11 @@ class AuthController extends Controller
     {
         // print_r($request->name_ar); exit;
         $attrs = $request->validate([
-            "name"=> "required|string",
-            "email"=> "required|email|unique:users,email",
-            "password"=> "required|min:6|confirmed",
+            "first_name"=> "required|string",
+            "last_name"=> "required|string",
+            // "password"=> "required|min:6|confirmed",
             'mobile' => 'required|unique:users',
-            'user_type'=> 'required|int',
+            // 'user_type'=> 'required|int',
         ]);
         $file_name = "";
         if(isset($_FILES['image']))
@@ -33,17 +33,17 @@ class AuthController extends Controller
         }
         $randomNumber = rand(100000, 999999);
         $user = User::create([
-            "name"=> $attrs["name"],
-            "name_ar"=> $request->name_ar,
-            "email"=> $attrs["email"],
+            "name"=> $attrs["first_name"]." ".$attrs["last_name"],
+            // "name_ar"=> $request->name_ar,
+            // "email"=> $attrs["email"],
             "mobile" => $attrs["mobile"],
-            "user_type" => $attrs['user_type'],
-            "password"=> bcrypt($attrs["password"]),
-            "image"=> $file_name,
-            "otp"=> $randomNumber,
-            "street_address" => $request->address,
-            "status"=> 1,
-            "country" => $request->country,
+            // "user_type" => $attrs['user_type'],
+            // "password"=> bcrypt('12'),
+            // "image"=> $file_name,
+            // "otp"=> $randomNumber,
+            // "street_address" => $request->address,
+            // "status"=> 1,
+            // "country" => $request->country,
             'device_token' => $request->device_token
         ]);
         if(!empty($file_name))
@@ -54,9 +54,9 @@ class AuthController extends Controller
        
         if($user)
         {
-            Wallet::create([
-                'user_id' => $user->id
-            ]);
+            // Wallet::create([
+            //     'user_id' => $user->id
+            // ]);
             return response([
                 'users' => $user,
                 'token' => $user->createToken('secret')->plainTextToken,
@@ -268,7 +268,7 @@ class AuthController extends Controller
     {
         $attrs = $request->validate([
             "mobile"=> "required|string",
-            "password"=> "required|min:6",
+            // "password"=> "required|min:6",
             "device_token" => "required"
         ]);
         $data = $attrs;
@@ -276,30 +276,30 @@ class AuthController extends Controller
        $user = User::where('mobile', $attrs['mobile'])->first();
        if($user)
        {//    print_r($user->mobile); exit;
-            if($user->user_type == 1 && $user->status == 0)
-            {
-                return response([
-                    'message' => "Your account is inactive pls contact to the support to make active your account.",
-                ], 403);
-            } else if($user->user_type == 2 && $user->status == 0)
-            {
-                return response([
-                    'message' => "Your account status is inactive pls contact to the support to make active your account.",
-                ], 403);
-            }
-            if(!Auth::attempt($data)) {
-                return response([
-                    'message' => "Invalid Credentials.",
-                ], 403);
-            }
+            // if($user->user_type == 1 && $user->status == 0)
+            // {
+            //     return response([
+            //         'message' => "Your account is inactive pls contact to the support to make active your account.",
+            //     ], 403);
+            // } else if($user->user_type == 2 && $user->status == 0)
+            // {
+            //     return response([
+            //         'message' => "Your account status is inactive pls contact to the support to make active your account.",
+            //     ], 403);
+            // }
+            // if(!Auth::attempt($data)) {
+            //     return response([
+            //         'message' => "Invalid Credentials.",
+            //     ], 403);
+            // }
 
             DB::table('users')->where('mobile', $attrs['mobile'])->update([
                 'device_token' => $attrs['device_token']
             ]);
                 // return redirect()->route("")->with("success","");
                 return response([
-                    'user' => auth()->user(),
-                    'token' => auth()->user()->createToken('secret')->plainTextToken,
+                    'user' => $user,
+                    'token' => $user->createToken('secret')->plainTextToken,
                 ], 200);
        } else {
             return response([

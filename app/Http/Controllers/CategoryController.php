@@ -106,10 +106,12 @@ class CategoryController extends Controller
             return redirect()->route('category.index', $category->id)->with('success', trans("lang.update_message"));
         }
         $imageName = "";
+        // print_r($_FILES); exit;
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            // echo 11222; exit;
             $imageName = time() . '.' . $request->file->extension();
 
-            $request->file->move(public_path('uploads'), $imageName);
+            $request->file->move(public_path('uploads'), $imageName); //exit;
             $category->image = $imageName;
         }
 
@@ -131,5 +133,5 @@ class CategoryController extends Controller
         return redirect()->route('category.index')->with('success', trans("lang.category_delete_message"));
     }
 
-
+    
 }

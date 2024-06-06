@@ -316,15 +316,16 @@ class ProductController extends Controller
         }
     }
 
-    public function products($id)
+    public function products()
     {
-        $products = Product::orderBy("id","desc")->paginate(30);
+        $products = Product::where('status', 1)->orderBy("id","desc")->select('id', 'p_name', 'price', 'description', 'created_by', 'tax', 'discount', 'images')->get();
         // print_r(json_decode(json_encode($products), true));
         if(count($products) > 0)
         {
             return response([
                 "status"=> "1",
                 "products"=> json_decode(json_encode($products), true),
+                'base_url' => asset('images/')
             ],200);
         } else {
             return response([

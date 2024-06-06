@@ -50,11 +50,6 @@ $app->singleton(
 | application instead of pointing to the 'public' directory.
 |
 */
-
-$app->bind('path.public', function () {
-    return __DIR__.'/../';
-});
-
 /*
 |--------------------------------------------------------------------------
 | Return The Application

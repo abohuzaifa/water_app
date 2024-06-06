@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CartController;
+use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\WishListController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\OrderController;
@@ -81,7 +82,7 @@ Route::group(["middleware"=> "auth:sanctum"], function () {
     Route::post('/createProduct', [ProductController::class, 'createProduct'])->name('createProduct');
     Route::get('/deleteProduct/{id}', [ProductController::class, 'delete'])->name('deleteProduct');
     Route::post('/updateProduct/{id}', [ProductController::class, 'updateProduct'])->name('updateProduct');
-    Route::get('/allProducts/{id}', [ProductController::class,'products'])->name('allProducts');
+    Route::get('/allProducts', [ProductController::class,'products'])->name('allProducts');
     Route::get('/sellerProducts', [ProductController::class, 'sellerProducts'])->name('sellerProducts');
     Route::post('/galary_images', [ProductController::class, 'galary_images'])->name('galary_images');
 
@@ -149,4 +150,8 @@ Route::group(["middleware"=> "auth:sanctum"], function () {
     Route::post("/adImpression", [Ad_requestController::class, 'adImpression'])->name('adImpression');
     Route::post("/adClickList", [Ad_requestController::class, 'adClickList'])->name('adClickList');
     Route::post("/adImpressionList", [Ad_requestController::class, 'adImpressionList'])->name('adImpressionList');
+
+    Route::apiResource('locations', LocationController::class);
+    Route::post("/getPlacesUsingCategoryID", [LocationController::class, 'getPlacesUsingCategoryID'])->name('getPlacesUsingCategoryID');
+    Route::get("/mostNeedPlaces", [LocationController::class, 'mostNeedPlaces'])->name('mostNeedPlaces');
 });
